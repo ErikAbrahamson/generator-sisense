@@ -18,7 +18,7 @@ prism.registerWidget("<%= name %>", {
 	data: {
 		selection : [],
 		defaultQueryResult : {},
-		panels: <%= panels %>, // jshint ignore:line
+		panels: <%- panels %>,
 		allocatePanel: function(widget, metadataItem) {
 
 			var p = widget.metadata.panels;

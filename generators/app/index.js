@@ -9,11 +9,15 @@ var yosay = require('yosay');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var stringifyObject = require('stringify-object');
-var iconv = require('iconv-lite');
 
 module.exports = yeoman.Base.extend({
 
     prompting: function() {
+
+        this.log(
+            chalk.yellow('Welcome to the Sisense Widget Generator!'));
+        this.log(
+            chalk.cyan('Let\'s begin by adding your panels'));
 
         this.parser = function(d) {
             var iso = new RegExp(/(&#34;)/g), apo = '"';
@@ -33,37 +37,66 @@ module.exports = yeoman.Base.extend({
             {
                 type: 'input',
                 name: 'pName',
-                message: 'Panel name?',
+                message: chalk.cyan('Panel name?'),
                 default: 'Panel'
             },
             {
                 type: 'list',
                 name: 'pType',
                 choices: ['visible', 'filters'],
-                message: 'Panel type?',
+                message: chalk.cyan('Panel type?'),
                 default: [0]
             },
             {
                 type: 'list',
                 name: 'pTypes',
                 choices: ['measures', 'dimensions'],
-                message: 'Will the values be dimensions or measures?',
+                message: chalk.cyan('Will the values be dimensions or measures?'),
                 default: [0]
             },
             {
                 type: 'list',
                 name: 'pMaxItems',
                 choices: ['-1', '0', '1'],
-                message: 'Maximum number of items?',
+                message: chalk.cyan('Maximum number of items?'),
                 default: [2]
             },
             {
                 type: 'confirm',
                 name: 'continue',
-                message: 'Add another panel?',
+                message: chalk.cyan('Add another panel?'),
                 default: false
             }
         ];
+
+        this.getProps = function() {
+            this.prompt([
+                {
+                    type: 'input',
+                    name: 'name',
+                    message: chalk.magenta('Widget Name? (camelCase)'),
+                    default: 'newWidget'
+                },
+                {
+                    type: 'list',
+                    name: 'family',
+                    message: chalk.magenta('Viz family?'),
+                    choices: ['d3', 'Highcharts'],
+                    default: this.appname
+                },
+                {
+                    type: 'input',
+                    name: 'title',
+                    message: chalk.magenta('Widget title?'),
+                    default: this.appname
+                }
+            ], function(answers) {
+                this.props.name = answers.name;
+                this.props.family = answers.family;
+                this.props.title = answers.title;
+                done();
+            }.bind(this));
+        };
 
         this.getPanels = function() {
             var panelModel = {
@@ -75,19 +108,18 @@ module.exports = yeoman.Base.extend({
                 }
             };
             this.prompt(q, function(answers) {
-                panelModel.name = iconv.decode(answers.pName, 'ISO-8859-1');
+                panelModel.name = answers.pName;
                 panelModel.type = answers.pType;
                 panelModel.metadata.types.push(answers.pTypes);
                 panelModel.metadata.maxitems = +(answers.pMaxItems);
                 this.props = answers;
                 panels.push(panelModel);
                 this.props.panels = panels;
-                this.props.panelQ = this.props.panelQ.length;
                 this.props.panels  = stringifyObject(
                     this.parser(this.props.panels), {
                         singleQuotes: false
                     });
-                answers.continue ? this.getPanels() : done();
+                answers.continue ? this.getPanels() : this.getProps();
             }.bind(this));
         };
         this.getPanels();
@@ -97,11 +129,11 @@ module.exports = yeoman.Base.extend({
 
         var pluginRoot = '/PrismWeb/plugins';
         if (this.destinationPath().indexOf(pluginRoot) >= 0) {
-            this.log(chalk.green(
+            this.log(chalk.cyan(
                 'You are in the plugins directory'));
         } else {
-            this.log(chalk.red(
-                'Please remember to put this in your plugins directory'));
+            this.log(chalk.red.bgBlack.bold(
+                '!!! Please remember to put this in your plugins directory !!!'));
         }
 
         this.fs.copy(
@@ -157,18 +189,14 @@ module.exports = yeoman.Base.extend({
                 family : this.props.family,
                 title  : this.props.title,
                 panels : this.props.panels,
-                panelQ : this.props.panelQ
             }
         );
     },
 
     install: function() {
-        this.installDependencies();
+        // this.installDependencies();
         this.log(yosay(
-            chalk.yellow('Built boilerplate for ' + this.props.name + '\n') +
+            chalk.yellow('Built boilerplate for ' + chalk.inverse.bold(this.props.title) + '\n') +
             chalk.green('All done!')));
-        this.log(chalk.blue(this.props.panels));
-        this.log(chalk.blue(this.parser));
     }
-
 });

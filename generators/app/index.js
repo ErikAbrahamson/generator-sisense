@@ -82,6 +82,7 @@ module.exports = yeoman.Base.extend({
                 this.props = answers;
                 panels.push(panelModel);
                 this.props.panels = panels;
+                this.props.panelQ = this.props.panelQ.length;
                 this.props.panels  = stringifyObject(
                     this.parser(this.props.panels), {
                         singleQuotes: false
@@ -155,7 +156,8 @@ module.exports = yeoman.Base.extend({
                 name   : this.props.name,
                 family : this.props.family,
                 title  : this.props.title,
-                panels : this.props.panels
+                panels : this.props.panels,
+                panelQ : this.props.panelQ
             }
         );
     },

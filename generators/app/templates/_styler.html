@@ -1,0 +1,30 @@
+<!--
+This file is optional, but contains the HTML (and angularJS)
+required to add design options to a new widget type.
+-->
+
+<div data-ng-controller="plugin-<%= name %>.controllers.stylerController">
+
+    <div class="settings-pane-host">
+
+		<div class="pane-row">
+			<div class="pane-row-title">Example Design Item</div>
+			<div class="positions-holder">
+
+				 <div data-ng-class="{ selected: model.isRunning == true }" data-ng-click="example(true)" class="radio-option-item">
+					<div class="custom-radio-btn" data-ng-class="{ selected: model.isRunning == true }"></div>
+					<div class="radio-option-separator"></div>
+					<div class="radio-option-caption">True</div>
+				 </div>
+
+				  <div data-ng-class="{ selected: model.isRunning == false }" data-ng-click="example(false)" class="radio-option-item">
+					<div class="custom-radio-btn" data-ng-class="{ selected: model.isRunning == false}"></div>
+					<div class="radio-option-separator"></div>
+					<div class="radio-option-caption">False</div>
+				 </div>
+
+			</div>
+		</div>
+
+	</div>
+</div>

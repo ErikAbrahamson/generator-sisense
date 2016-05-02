@@ -1,0 +1,13 @@
+{
+    "name": "<%= name %>",
+    "source": [
+        "widget.js",
+        "lib/underscore.js",
+        "directives/main.js"
+    ],
+
+    "style": [
+        "styles/main.css",
+        "styles/main.less"
+    ]
+}

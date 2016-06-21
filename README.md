@@ -1,4 +1,4 @@
-# generator-sisense [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# generator-sisense [![Dependency Status][daviddm-image][daviddm-url]]
 > A generator to make building widgets in SiSense easier
 
 ## Installation

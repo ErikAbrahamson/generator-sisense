@@ -1,4 +1,4 @@
-# generator-sisense [![Dependency Status][daviddm-image][daviddm-url]]
+# generator-sisense [Dependency Status]
 > A generator to make building widgets in SiSense easier
 
 ## Installation

@@ -19,20 +19,6 @@ module.exports = yeoman.Base.extend({
         this.log(
             chalk.cyan('Let\'s begin by adding your panels'));
 
-        this.parser = function(d) {
-            var iso = new RegExp(/(&#34;)/g), apo = '"';
-            d.forEach(function(i) {
-                for (var p in i ) {
-                    if (typeof i[p] === 'object') {
-                        i[p].types[0] = i[p].types[0].replace(iso, apo);
-                    } else {
-                        i[p] = i[p].replace(iso, apo);
-                    }
-                }
-            });
-            return d;
-        };
-
         var done = this.async(), panels = [], q = [
             {
                 type: 'input',
@@ -116,7 +102,7 @@ module.exports = yeoman.Base.extend({
                 panels.push(panelModel);
                 this.props.panels = panels;
                 this.props.panels  = stringifyObject(
-                    this.parser(this.props.panels), {
+                    this.props.panels, {
                         singleQuotes: false
                     });
                 answers.continue ? this.getPanels() : this.getProps();
